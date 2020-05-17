@@ -11,6 +11,7 @@ import {
   svgCoords,
   svgPath,
   star,
+  starData
 } from "./stars.ts";
 const { test } = Deno;
 
@@ -125,8 +126,26 @@ test("star", () => {
       path:
         "M 500.000 0.000 L 206.107 904.508 L 975.528 345.492 L 24.472 345.492 L 793.893 904.508 L 500.000 0.000",
       pathLength: "4755.283",
-      availableJumps: [2],
+      availableJumps: [2]
     },
     star(500, 5, 2),
+  );
+});
+
+test("starData", () => {
+  assertEquals(
+    [
+      { points: 5, availableJumps: [2] },
+      { points: 7, availableJumps: [2, 3] }
+    ],
+    starData(1, 7)
+  );
+  assertEquals(
+    [
+      { points: 7, availableJumps: [2, 3] },
+      { points: 8, availableJumps: [3] },
+      { points: 9, availableJumps: [2, 4] }
+    ],
+    starData(7, 9)
   );
 });

@@ -155,3 +155,26 @@ export function star(
     availableJumps,
   };
 }
+
+interface StarData {
+  points: number;
+  availableJumps: number[];
+}
+
+export function starData(start: number, end: number): StarData[] {
+  const infos: StarData[] = [];
+
+  for (let i = start; i <= end; ++i) {
+    const availableJumps = jumps(i);
+
+    if (availableJumps.length > 0) {
+      infos.push({
+        points: i,
+        availableJumps
+      });
+    }
+  }
+
+  return infos;
+}
+
