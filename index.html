@@ -1,86 +1,96 @@
-<style>
-  html, body {
-    margin: 0;
-  }
-
-  body {
-    padding: 24px;
-    background: radial-gradient(#160733, #070112);
-  }
-
-  #star {
-    display: block;
-    margin: 0 auto 24px;
-  }
-
-  #star-path {
-    fill: transparent;
-    filter: url(#glow);
-    stroke: #f0f0b7;
-  }
-
-  #star-path.animate {
-    stroke-dashoffset: 0;
-    transition: stroke-dashoffset 3s linear;
-  }
-
-  .slider {
-    display: block;
-    width: 100%;
-  }
-</style>
-<svg
-  id="star"
-  height="90vh"
-  viewBox="0 0 1000 1000"
-  preserveAspectRatio="none"
-  xmlns="https://www.w3.org/2000/svg"
->
-  <filter id="glow">
-    <fegaussianblur result="coloredBlur" stddeviation="5">
-    </fegaussianblur>
-    <femerge>
-      <femergenode in="coloredBlur"></femergenode>
-      <femergenode in="coloredBlur"></femergenode>
-      <femergenode in="coloredBlur"></femergenode>
-      <femergenode in="SourceGraphic"></femergenode>
-    </femerge>
-  </filter>
-  <path id="star-path"/>
-</svg>
-<input
-  id="point-slider"
-  class="slider"
-  type="range"
-  min="5"
-  max="100"
-  value="5"
-/>
-
-<script type="module">
-  import { star } from "./stars.js";
-
-  const svg = document.querySelector("#star");
-  const path = document.querySelector("#star-path");
-  const pointSlider = document.querySelector("#point-slider");
-
-  function draw(points) {
-    const actualStar = star(500, points);
-
-    if (actualStar) {
-      const { path: svgPath, pathLength } = actualStar;
-      path.classList.remove("animate");
-      path.setAttribute("d", svgPath);
-      path.setAttribute("stroke-dasharray", pathLength);
-      path.setAttribute("stroke-dashoffset", pathLength);
-      setTimeout(() => path.classList.add("animate"), 0);
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stars</title>
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <style>
+    html, body {
+      margin: 0;
     }
-  }
 
-  pointSlider.addEventListener("change", event => {
-    draw(event.target.value);
-  });
+    body {
+      padding: 24px;
+      background: radial-gradient(#160733, #070112);
+    }
 
-  draw(5);
-</script>
+    #star {
+      display: block;
+      margin: 0 auto 24px;
+    }
 
+    #star-path {
+      fill: transparent;
+      filter: url(#glow);
+      stroke: #f0f0b7;
+    }
+
+    #star-path.animate {
+      stroke-dashoffset: 0;
+      transition: stroke-dashoffset 3s linear;
+    }
+
+    .slider {
+      display: block;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <svg
+    id="star"
+    height="90vh"
+    viewBox="0 0 1000 1000"
+    preserveAspectRatio="none"
+    xmlns="https://www.w3.org/2000/svg"
+  >
+    <filter id="glow">
+      <fegaussianblur result="coloredBlur" stddeviation="5">
+      </fegaussianblur>
+      <femerge>
+        <femergenode in="coloredBlur"></femergenode>
+        <femergenode in="coloredBlur"></femergenode>
+        <femergenode in="coloredBlur"></femergenode>
+        <femergenode in="SourceGraphic"></femergenode>
+      </femerge>
+    </filter>
+    <path id="star-path"/>
+  </svg>
+  <input
+    id="point-slider"
+    class="slider"
+    type="range"
+    min="5"
+    max="100"
+    value="5"
+  />
+
+  <script type="module">
+    import { star } from "./stars.js";
+
+    const svg = document.querySelector("#star");
+    const path = document.querySelector("#star-path");
+    const pointSlider = document.querySelector("#point-slider");
+
+    function draw(points) {
+      const actualStar = star(500, points);
+
+      if (actualStar) {
+        const { path: svgPath, pathLength } = actualStar;
+        path.classList.remove("animate");
+        path.setAttribute("d", svgPath);
+        path.setAttribute("stroke-dasharray", pathLength);
+        path.setAttribute("stroke-dashoffset", pathLength);
+        setTimeout(() => path.classList.add("animate"), 0);
+      }
+    }
+
+    pointSlider.addEventListener("change", event => {
+      draw(event.target.value);
+    });
+
+    draw(5);
+  </script>
+</body>
+</html>
