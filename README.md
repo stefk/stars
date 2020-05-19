@@ -8,5 +8,7 @@ Interactive star drawer.
 
 ```
 deno test
-deno bundle stars.ts > stars.js
+deno bundle stars.ts > public/dist/stars.js
+
+# serve public dir
 ```
