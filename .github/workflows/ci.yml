@@ -18,6 +18,7 @@ jobs:
         run: |
           deno test
           deno bundle stars.ts > stars.js
+          ls .
       - name: Install SSH client
         uses: webfactory/ssh-agent@v0.2.0
         with:
@@ -27,5 +28,5 @@ jobs:
         with:
           SSH: true
           BRANCH: gh-pages
-          FOLDER: public
+          FOLDER: .
 
