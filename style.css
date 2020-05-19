@@ -1,0 +1,68 @@
+html, body {
+  margin: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: monospace;
+  color: #f0f0b7;
+  background: radial-gradient(#160733, #070112);
+}
+
+.star-wrapper {
+  display: flex;
+}
+
+#star {
+  height: calc(94vh - 48px);
+  max-width: 98vw;
+  margin: 24px auto;
+}
+
+#star-path {
+  fill: transparent;
+  filter: url(#glow);
+  stroke: #f0f0b7;
+}
+
+#star-path.animate {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 3s linear;
+}
+
+.controls {
+  height: 6vh;
+  display: flex;
+}
+
+.sliders {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 320px;
+  padding: 0 10px;
+}
+
+.sliders input[type=range] {
+  display: block;
+  width: 320px;
+}
+
+.sliders input[type=range]:disabled {
+  opacity: .4;
+  width: 35px;
+}
+
+.sliders input[type=range]:disabled:hover {
+  cursor: not-allowed;
+}
+
+.text {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  font-size: .9em;
+  text-align: center;
+}

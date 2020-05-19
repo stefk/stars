@@ -1,0 +1,132 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stars</title>
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="stylesheet" type="text/css" href="range.css" />
+  <link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+<body>
+  <div class="star-wrapper">
+    <svg
+      id="star"
+      viewBox="0 0 1000 1000"
+      preserveAspectRatio="xMidYMid meet"
+      xmlns="https://www.w3.org/2000/svg"
+    >
+      <filter id="glow">
+        <fegaussianblur result="coloredBlur" stddeviation="5">
+        </fegaussianblur>
+        <femerge>
+          <femergenode in="coloredBlur"></femergenode>
+          <femergenode in="coloredBlur"></femergenode>
+          <femergenode in="coloredBlur"></femergenode>
+          <femergenode in="SourceGraphic"></femergenode>
+        </femerge>
+      </filter>
+      <path id="star-path"/>
+    </svg>
+  </div>
+  <div class="controls">
+    <div class="sliders">
+      <input
+        id="point-slider"
+        class="slider"
+        type="range"
+        min="0"
+        max="94"
+        value="0"
+      />
+      <input
+        id="jump-slider"
+        class="slider"
+        type="range"
+        min="0"
+        max="0"
+        value="0"
+        disabled
+      />
+    </div>
+    <div class="text">
+      <div>
+        <span id="point-count">5</span>-pointed star with
+        <span id="jump-count">2</span>-points jump interval.
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { star, starData } from "./dist/stars.js";
+
+    const stars = starData(5, 100);
+    const svg = document.querySelector("#star");
+    const path = document.querySelector("#star-path");
+    const pointSlider = document.querySelector("#point-slider");
+    const pointCount = document.querySelector("#point-count");
+    const jumpSlider = document.querySelector("#jump-slider");
+    const jumpCount = document.querySelector("#jump-count");
+
+    let starIndex = 0;
+    let jumpIndex = 0;
+
+    function draw(points) {
+      const { availableJumps } = stars.find(s => s.points === points);
+      const jumps = availableJumps.length;
+
+      if (jumpIndex >= jumps) {
+        jumpIndex = availableJumps[jumps - 1];
+      }
+
+      const actualStar = star(500, points, availableJumps[jumpIndex]);
+      const { path: svgPath, pathLength } = actualStar;
+
+      jumpSlider.value = jumpIndex;
+      jumpCount.innerText = availableJumps[jumpIndex];
+
+      if (jumps > 1) {
+        jumpSlider.setAttribute("min", 0);
+        jumpSlider.setAttribute("max", jumps - 1);
+
+        if (jumps <= 10) {
+          jumpSlider.style.width = `${20 + jumps * 15}px`;
+        } else {
+          jumpSlider.style.width = "320px";
+        }
+
+        jumpSlider.disabled = false;
+      } else {
+        jumpSlider.style.width = "35px";
+        jumpSlider.disabled = true;
+      }
+
+      path.classList.remove("animate");
+      path.setAttribute("d", svgPath);
+      path.setAttribute("stroke-dasharray", pathLength);
+      path.setAttribute("stroke-dashoffset", pathLength);
+      setTimeout(() => path.classList.add("animate"), 0);
+    }
+
+    pointSlider.addEventListener("input", event => {
+      starIndex = event.target.value;
+      pointCount.innerText = stars[starIndex].points;
+    });
+
+    pointSlider.addEventListener("change", event => {
+      draw(stars[starIndex].points);
+    });
+
+    jumpSlider.addEventListener("input", event => {
+      jumpIndex = event.target.value;
+      jumpCount.innerText = stars[starIndex].availableJumps[jumpIndex];
+    });
+
+    jumpSlider.addEventListener("change", event => {
+      draw(stars[starIndex].points);
+    });
+
+    draw(5);
+  </script>
+</body>
+</html>
