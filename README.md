@@ -1,14 +1,14 @@
 # Stars
 
-Interactive star drawer.
+[Demo](https://stefk.github.io/stars/)
 
-![Screenshot](https://raw.githubusercontent.com/stefk/stars/master/screenshot.png?token=AAGXCGPASKJ66EIDHAHS55C6YRBNQ)
+![Screenshot](https://raw.githubusercontent.com/stefk/stars/master/public/screenshot.png)
+
+Interactive star drawer.
 
 ## Usage
 
 ```
 deno test
 deno bundle stars.ts > public/dist/stars.js
-
-# serve public dir
 ```
